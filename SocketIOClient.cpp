@@ -92,14 +92,23 @@ void SocketIOClient::monitor() {
 
 		findColon(which);
 		dataptr += 2;
-		terminateCommand();
 
-		//Serial.print("[");
-		//Serial.print(dataptr);
-		//Serial.print("]");
+		// handle backslash-delimited escapes
+		char *optr = databuffer;
+		while (*dataptr && (*dataptr != '"')) {
+			if (*dataptr == '\\') {
+				++dataptr;		// todo: this just handles "; handle \r, \n, \t, \xdd
+			}
+			*optr++ = *dataptr++;
+		}
+		*optr = 0;
+
+		Serial.print("[");
+		Serial.print(databuffer);
+		Serial.print("]");
 
 		if (dataArrivedDelegate != NULL) {
-			dataArrivedDelegate(*this, dataptr);
+			dataArrivedDelegate(*this, databuffer);
 		}
 	}
 }
@@ -205,5 +214,3 @@ void SocketIOClient::send(char *data) {
 	client.print(data);
 	client.print((char)255);
 }
-
-

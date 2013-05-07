@@ -59,7 +59,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('message', function(data) {
 		process.stdout.write(data);
 	});
-	socket.emit("ls");
+	socket.emit('ls');
 	output_socket = socket;		// save global ugh
 });
 

@@ -1,9 +1,4 @@
-/*
-	socket.io-arduino-client: a Socket.IO client for the Arduino
-
-	Based on the Kevin Rohling WebSocketClient
-
-	Copyright 2013 Bill Roy
+	Copyright (C) 2008-2012 Bill Roy
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -25,37 +20,3 @@
 	WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 	OTHER DEALINGS IN THE SOFTWARE.
-*/
-#include "Arduino.h"
-#include <Ethernet.h>
-#include "SPI.h"
-
-// Length of static data buffers
-#define DATA_BUFFER_LEN 120
-#define SID_LEN 24
-
-class SocketIOClient {
-	public:
-		typedef void (*DataArrivedDelegate)(SocketIOClient client, char *data);
-		bool connect(char hostname[], int port = 80);
-        bool connected();
-        void disconnect();
-		void monitor();
-		void setDataArrivedDelegate(DataArrivedDelegate dataArrivedDelegate);
-		void send(char *data);
-	private:
-        void sendHandshake(char hostname[]);
-        EthernetClient client;
-        DataArrivedDelegate dataArrivedDelegate;
-        bool readHandshake();
-		void readLine();
-		char *dataptr;
-		char databuffer[DATA_BUFFER_LEN];
-		char sid[SID_LEN];
-		char *hostname;
-		int port;
-		void findColon(char which);
-		void terminateCommand(void);
-		bool waitForInput(void);
-		void eatHeader(void);
-};

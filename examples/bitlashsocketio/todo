@@ -1,13 +1,30 @@
-
-
+socketio-arduino-client todo list
+5/7/13 -br
 
 - BUG: unescape \" etc received from server
 	test case: print "foo"
-	
-- abstract the GET request sender?
 
-- doc redo
-
-- echo example
+- BUG: control-C doesn't work
+	- a packet containing just ^C should stop all macros
+	- same as STOP
 
 - server: log to file
+
+- reconnect after server loss
+
+- wprintf, to print over the socket, instead of printing full time
+
+- For Heroku, a non-websocket version?
+	- Procfile
+	- heroku port setup
+	- web interface
+	- auth
+
+- lazy connection
+
+- handle more than one arduino connected
+	command steering
+	global_socket problem
+
+- authentication
+	- perhaps origin header as password

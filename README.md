@@ -6,10 +6,6 @@ The bitlashsocketio.ino example provides an integration with Bitlash on the Ardu
 
 Kevin's documentation is reproduced hereinafter, with changes as needed.
 
-- Bill Roy
-Denver, Colorado
-May, 2013
-----------------------------------
 
 ## Caveats
 
