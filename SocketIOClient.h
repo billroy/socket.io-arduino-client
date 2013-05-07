@@ -31,10 +31,8 @@
  THE SOFTWARE.
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <WString.h>
 #include <Ethernet.h>
+#include "SPI.h"
 #include "Arduino.h"
 
 // Length of static data buffers
@@ -43,25 +41,24 @@
 
 class SocketIOClient {
 	public:
-		typedef void (*DataArrivedDelegate)(WebSocketClient client, char *data);
-		bool connect(char hostname[], char path[] = "/", int port = 80);
+		typedef void (*DataArrivedDelegate)(SocketIOClient client, char *data);
+		bool connect(char hostname[], int port = 80);
         bool connected();
         void disconnect();
 		void monitor();
 		void setDataArrivedDelegate(DataArrivedDelegate dataArrivedDelegate);
 		void send(char *data);
 	private:
-        void sendHandshake(char hostname[], char path[]);
-        EthernetClient _client;
-        DataArrivedDelegate _dataArrivedDelegate;
+        void sendHandshake(char hostname[]);
+        EthernetClient client;
+        DataArrivedDelegate dataArrivedDelegate;
         bool readHandshake();
-		void _readLine();
-		char *_dataptr;
-		char _databuffer[DATA_BUFFER_LEN];
-		char _sid[SID_LEN];
-		char *_hostname;
-		char *_path;
-		int _port;
+		void readLine();
+		char *dataptr;
+		char databuffer[DATA_BUFFER_LEN];
+		char sid[SID_LEN];
+		char *hostname;
+		int port;
 		void findColon(char which);
 		void terminateCommand(void);
 		bool waitForInput(void);

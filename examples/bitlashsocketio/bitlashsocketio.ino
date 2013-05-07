@@ -33,7 +33,6 @@
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 char hostname[] = "192.168.0.2";
-char path[] = "/socket.io/1";
 int port = 3000;
 
 SocketIOClient client;
@@ -58,7 +57,7 @@ void setup() {
 	Ethernet.begin(mac);
 
 	client.setDataArrivedDelegate(ondata);
-	client.connect(hostname, path, port);
+	client.connect(hostname, port);
 	if (!client.connected()) Serial.println(F("Not connected."));
 
 	client.send("{cmd: \"Hello, world!\"}");
