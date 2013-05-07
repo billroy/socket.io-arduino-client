@@ -1,13 +1,13 @@
 
 
-- push to git
-	- rename to socketioclient
 
-- send whole commands from index.js test client
-
-- respond to type 2 heartbeat packets
-	what format?
+- BUG: unescape \" etc received from server
+	test case: print "foo"
 	
 - abstract the GET request sender?
 
-- BUG: unescape \" etc received from server
+- doc redo
+
+- echo example
+
+- server: log to file

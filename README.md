@@ -1,15 +1,15 @@
-# ArduinoWebsocketClient, an Arduino client for connecting and messaging with Websockets
-Blog: [World Domination Using Arduinos And Websockets](http://kevinrohling.wordpress.com/2011/09/14/world-domination-using-arduinos-and-websockets)
+# SocketIO Arduino Client, an Arduino client for connecting and messaging with Socket.io servers
 
-Websockets currently provide a simple and lightweight way to send and receive messages from web browsers.  This project was developed to extend this capability to embedded devices (Arduinos).  It is my hope that allowing devices to easily send information about themselves as well as respond to messages received from hosted services will result in some interesting applications.
+Based on Kevin Rohling's arduino websocket client modified to work with socket.io servers.  Along the way, all uses of the String class were replaced with fixed char buffers so as to use less memory.
 
+The bitlashsocketio.ino example provides an integration with Bitlash on the Arduino and a node.js example server that can be used to send Bitlash commands over the Websocket fabric to the Arduino, and see its output in reply.
 
-## No-String class Fork by Bill Roy
+Kevin's documentation is reproduced hereinafter, with changes as needed.
 
-This repo is a fork of Kevin Rohling's websocket client.
-
-This version uses fixed-length char arrays in place of the String class.
-
+- Bill Roy
+Denver, Colorado
+May, 2013
+----------------------------------
 
 ## Caveats
 
@@ -17,7 +17,7 @@ This library doesn't support every inch of the Websocket spec, most notably the 
 
 ## Installation instructions
 
-Once you've cloned this repo locally, copy the ArduinoWebsocketClient directory into your Arduino Sketchbook directory under Libraries then restart the Arduino IDE so that it notices the new library.  Now, under File\Examples you should see ArduinoWebsocketClient.  To use the library in your app, select Sketch\Import Library\ArduinoWebsocketClient.
+Clone this repo into your Arduino Sketchbook directory under libraries, then restart the Arduino IDE so that it notices the new library.  Now, under File\Examples you should see SocketIOClient.  
 
 ## How To Use This Library
 
@@ -38,7 +38,7 @@ void loop() {
   client.monitor();
 }
 
-void dataArrived(WebSocketClient client, String data) {
+void dataArrived(WebSocketClient client, char *data) {
   Serial.println("Data Arrived: " + data);
 }
 ```
