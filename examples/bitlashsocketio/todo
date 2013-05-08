@@ -1,18 +1,29 @@
 socketio-arduino-client todo list
 5/7/13 -br
 
-- BUG: unescape \" etc received from server
-	test case: print "foo"
-
 - BUG: control-C doesn't work
 	- a packet containing just ^C should stop all macros
 	- same as STOP
-
-- server: log to file
+	- no help for out-of-control foreground tasks
 
 - reconnect after server loss
+- lazy connection
 
 - wprintf, to print over the socket, instead of printing full time
+
+- handle more than one arduino connected
+	command steering
+	global_socket problem
+
+- authentication
+	- perhaps origin header as shared secret
+	https://github.com/LearnBoost/socket.io/wiki/Authorizing
+
+- socket.io relay?
+
+- live web terminal
+
+- tiny echo sketch for sizing
 
 - For Heroku, a non-websocket version?
 	- Procfile
@@ -20,11 +31,4 @@ socketio-arduino-client todo list
 	- web interface
 	- auth
 
-- lazy connection
-
-- handle more than one arduino connected
-	command steering
-	global_socket problem
-
-- authentication
-	- perhaps origin header as password
+- stub server to forward USB connection

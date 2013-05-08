@@ -13,7 +13,11 @@ var argv = opt.usage('Usage: $0 [flags]')
 	.describe('p', 'TCP port for the http server (3000)')
 	.alias('d', 'debug')
 	.describe('d', 'Enable debug output')
+	.alias('l', 'log')
+	.describe('l', 'Log arduino output to file')
 	.argv;
+
+var log_file = "datalog.txt";
 
 if (argv.help) {
 	opt.showHelp();
@@ -42,7 +46,7 @@ app.configure(function () {
 });
 
 app.get('/', function(req, res) {
-	res.send("WebSocket Client Test")
+	res.sendfile('index.html');
 });
 
 server.listen(port);
@@ -54,14 +58,41 @@ console.log('Listening on port:', port);
 //	Socket.io startup
 //
 var output_socket;
+var tty = io
+	.of('/tty')
+	.on('connection', function(socket) {
+		console.log('Browser connected.');
+		socket.emit('message', 'Connected to server at ' + new Date().toString() + '\n');
+		socket.on('message', function(data) {
+			console.log('from client: ', data);
+			if (output_socket) output_socket.emit(data);
+		});
+	});
+
+
+setInterval(function() {
+	console.log('Sending tty ping...');
+	tty.emit('message', new Date().toString() + '\n');
+}, 5000);
+
+
+var fs = require('fs');
 io.sockets.on('connection', function (socket) {
 	console.log('Client connected via', socket.transport);
 	socket.on('message', function(data) {
 		process.stdout.write(data);
+		tty.emit('message', data);
+		if (argv.log) {
+			fs.appendFile(log_file, data, function (err) {
+				if (err) console.log('LOG FILE WRITE ERROR:', data);
+				else {}
+			});
+		}
 	});
 	socket.emit('ls');
 	output_socket = socket;		// save global ugh
 });
+
 
 
 //////////

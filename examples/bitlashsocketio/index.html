@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- Copyright 2013 by Bill Roy - MIT license - See LICENSE file -->
+<html><head>
+	<title>SocketIO TTY</title>
+	<script type='text/javascript' src='/js/jquery-1.8.2.min.js'></script>
+	<script type='text/javascript' src='/socket.io/socket.io.js'></script>
+	<style media='screen' type='text/css'>
+	body {
+		background-color: black;
+		font-family: Courier, monospace;
+		color: lightgreen;
+	}
+	</style>
+</head><body>
+<script type='text/javascript' charset='utf8'>
+
+$(document).ready(function() {
+
+	function append(data) {
+		var tty = $('#tty');
+		tty.append(data);
+		while ((tty.offset().top + tty.height()) > $(window).height()) {
+			tty.first().contents().first().remove();
+		}
+	}
+
+	var tty = io.connect('http://localhost:3000/tty');
+	console.log('Socket connected', tty);
+	tty.on('message', function(data) { 
+		append(data.replace(/\n/g, '<br/>'));
+	});
+
+	var cmd = '';
+	//window.addEventListener('keypress', function(event) {
+	$(window).bind('keypress', function(event) {
+		var key = String.fromCharCode(event.charCode);
+		console.log('key:', key, event);
+		if ((key == '\r') || (key == '\n')) {
+			tty.emit("message", cmd);
+			cmd = '';
+			append('<br/>');
+		}
+		else {
+			cmd = cmd + key;
+			append(key);
+		}
+	});
+});
+
+</script>
+<div id='tty'></div>
+</body></html>
