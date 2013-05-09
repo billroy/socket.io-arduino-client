@@ -28,19 +28,32 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 char hostname[] = "192.168.0.2";
 int port = 3000;
 
-// bitlash serial output handler: forward output to websocket
+// buffer Bitlash's char-based output to cut down on sent packet count
+#define OUTPUT_BUFFER_LEN 33
+byte output_index = 0;
+char output_buffer[OUTPUT_BUFFER_LEN];
+
+// transmit the output buffer
+void sendbuffer(void) {
+	if (output_index == 0) return;
+	output_buffer[output_index] = 0;
+	Serial.print(output_buffer);
+	if (client.connected()) client.send(output_buffer);
+	output_index = 0;
+}
+
+// bitlash serial output handler: 
+// 	buffer an output character for forwarding to websocket
 void sendchar(byte c) {
-	Serial.print((char) c);
-	if (client.connected()) {
-		char buf[] = {(char)c, 0};
-		client.send(buf);
-	}
+	output_buffer[output_index++] = c;
+	if (output_index >= OUTPUT_BUFFER_LEN-1) sendbuffer();
 }
 
 // websocket message handler: do something with command from server
 void ondata(SocketIOClient client, char *data) {
 	Serial.print(data);
 	doCommand(data);	// ask Bitlash to execute the command
+	sendbuffer();
 }
 
 void setup() {
@@ -58,4 +71,5 @@ void setup() {
 void loop() {
   client.monitor();
   runBitlash();
+  sendbuffer();
 }

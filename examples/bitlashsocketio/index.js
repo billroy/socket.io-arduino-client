@@ -17,13 +17,13 @@ var argv = opt.usage('Usage: $0 [flags]')
 	.describe('l', 'Log arduino output to file')
 	.argv;
 
-var log_file = "datalog.txt";
-
 if (argv.help) {
 	opt.showHelp();
 	process.exit();
 } 
+
 var port = argv.port || 3000;
+var log_file = "datalog.txt";
 
 console.log('WebSocket Commander here!', argv);
 
@@ -58,6 +58,8 @@ console.log('Listening on port:', port);
 //	Socket.io startup
 //
 var output_socket;
+var fs = require('fs');
+
 var tty = io
 	.of('/tty')
 	.on('connection', function(socket) {
@@ -76,7 +78,6 @@ setInterval(function() {
 }, 5000);
 
 
-var fs = require('fs');
 io.sockets.on('connection', function (socket) {
 	console.log('Client connected via', socket.transport);
 	socket.on('message', function(data) {

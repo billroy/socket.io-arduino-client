@@ -1,6 +1,15 @@
 socketio-arduino-client todo list
 5/7/13 -br
 
+- doc
+	- install
+	- running the server
+		- port selection
+		- logging
+		- debugging
+	- server console commands
+	- live web terminal
+
 - BUG: control-C doesn't work
 	- a packet containing just ^C should stop all macros
 	- same as STOP
@@ -20,8 +29,6 @@ socketio-arduino-client todo list
 	https://github.com/LearnBoost/socket.io/wiki/Authorizing
 
 - socket.io relay?
-
-- live web terminal
 
 - tiny echo sketch for sizing
 
