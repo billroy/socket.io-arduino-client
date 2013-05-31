@@ -42,7 +42,7 @@ void setup() {
 	client.setDataArrivedDelegate(ondata);
 	if (!client.connect(hostname, port)) Serial.println(F("Not connected."));
 
-	client.send("Client here!");
+	if (client.connected()) client.send("Client here!");
 }
 
 #define HELLO_INTERVAL 3000UL
@@ -54,6 +54,6 @@ void loop() {
 	unsigned long now = millis();
 	if ((now - lasthello) >= HELLO_INTERVAL) {
 		lasthello = now;
-		client.send("Hello, world!\n");
+		if (client.connected()) client.send("Hello, world!\n");
 	}
 }
