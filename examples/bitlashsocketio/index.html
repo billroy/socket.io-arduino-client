@@ -9,6 +9,8 @@
 		background-color: black;
 		font-family: Courier, monospace;
 		color: lightgreen;
+		text-wrap: normal;
+		word-wrap: break-word;	
 	}
 	</style>
 </head><body>
@@ -41,11 +43,13 @@ $(document).ready(function() {
 			cmd = '';
 			append('<br/>');
 		}
+/*
 		else if (key == 3) {
 			tty.emit('message', '\x03');
 			cmd = '';
 			append('^C<br/>');
 		}
+*/
 		else {
 			cmd = cmd + key;
 			append(key);

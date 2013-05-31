@@ -1,5 +1,5 @@
 /***
-	bitlashsocketio.ino: Bitlash-Commander Socket.IO Client for Arduino/Bitlash
+	hello.ino: Hello World Socket.IO Client for Arduino/Bitlash
 
 	Copyright (C) 2013 Bill Roy
 	MIT license: see LICENSE file.
@@ -28,37 +28,14 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 char hostname[] = "192.168.0.2";
 int port = 3000;
 
-// buffer for Bitlash's char-based output to cut down on sent packet count
-#define OUTPUT_BUFFER_LEN 33
-byte output_index = 0;
-char output_buffer[OUTPUT_BUFFER_LEN];
-
-// transmit the output buffer
-void sendbuffer(void) {
-	if (output_index == 0) return;
-	output_buffer[output_index] = 0;
-	Serial.print(output_buffer);
-	if (client.connected()) client.send(output_buffer);
-	output_index = 0;
-}
-
-// bitlash serial output handler: 
-// 	buffer an output character for forwarding to websocket
-void sendchar(byte c) {
-	output_buffer[output_index++] = c;
-	if (output_index >= OUTPUT_BUFFER_LEN-1) sendbuffer();
-}
 
 // websocket message handler: do something with command from server
 void ondata(SocketIOClient client, char *data) {
 	Serial.print(data);
-	doCommand(data);	// ask Bitlash to execute the command
-	sendbuffer();		// send along any unsent output
 }
 
 void setup() {
-	setOutputHandler(&sendchar);	// make Bitlash use sendchar() to print
-	initBitlash(57600);				// and initialize Bitlash
+	Serial.begin(57600);
 
 	Ethernet.begin(mac);
 
@@ -68,8 +45,15 @@ void setup() {
 	client.send("Client here!");
 }
 
+#define HELLO_INTERVAL 3000UL
+unsigned long lasthello;
+
 void loop() {
-  client.monitor();
-  runBitlash();
-  sendbuffer();
+	client.monitor();
+
+	unsigned long now = millis();
+	if ((now - lasthello) >= HELLO_INTERVAL) {
+		lasthello = now;
+		client.send("Hello, world!\n");
+	}
 }

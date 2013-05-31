@@ -75,7 +75,7 @@ var tty = io
 setInterval(function() {
 	console.log('Sending tty ping...');
 	tty.emit('message', new Date().toString() + '\n');
-}, 5000);
+}, 30000);
 
 
 io.sockets.on('connection', function (socket) {
