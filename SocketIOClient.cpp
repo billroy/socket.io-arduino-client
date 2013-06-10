@@ -62,6 +62,11 @@ void SocketIOClient::terminateCommand(void) {
 void SocketIOClient::monitor() {
 
 	*databuffer = 0;
+
+	if (!client.connected()) {
+		if (!client.connect(hostname, port)) return;
+	}
+
 	if (!client.available()) return;
 
 	char which;
