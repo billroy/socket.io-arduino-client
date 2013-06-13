@@ -26,7 +26,7 @@ $(document).ready(function() {
 		}
 	}
 
-	var tty = io.connect('http://localhost:3000/tty');
+	var tty = io.connect('/tty');
 	console.log('Socket connected', tty);
 	tty.on('message', function(data) { 
 		data = data.replace(/\n/g, '<br/>');
