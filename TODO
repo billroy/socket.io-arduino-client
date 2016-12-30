@@ -1,0 +1,3 @@
+
+- send Host: header with server name for Heroku compatibility
+- test on heroku

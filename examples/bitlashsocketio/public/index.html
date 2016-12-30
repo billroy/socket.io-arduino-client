@@ -10,7 +10,7 @@
 		font-family: Courier, monospace;
 		color: lightgreen;
 		text-wrap: normal;
-		word-wrap: break-word;	
+		word-wrap: break-word;
 	}
 	</style>
 </head><body>
@@ -26,26 +26,27 @@ $(document).ready(function() {
 		}
 	}
 
-	var tty = io.connect('/tty');
-	console.log('Socket connected', tty);
-	tty.on('message', function(data) { 
+	var tty_socket = io({transports: ['websocket']});
+    console.log('Socket connected', tty_socket);
+	tty_socket.on('tty', function(data) {
 		data = data.replace(/\n/g, '<br/>');
 		data = data.replace(/ /g, '&nbsp;');
+        console.log('tty:', data);
 		append(data);
 	});
 
 	var cmd = '';
 	$(window).bind('keypress', function(event) {
 		var key = String.fromCharCode(event.charCode);
-		console.log('key:', key, event);
+		//console.log('key:', key, event);
 		if ((key == '\r') || (key == '\n')) {
-			tty.emit('message', cmd);
+			tty_socket.emit('tty', cmd);
 			cmd = '';
 			append('<br/>');
 		}
 /*
 		else if (key == 3) {
-			tty.emit('message', '\x03');
+			tty_socket.emit('message', '\x03');
 			cmd = '';
 			append('^C<br/>');
 		}

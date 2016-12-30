@@ -10,6 +10,11 @@ socketio-arduino-client todo list
 	- server console commands
 	- live web terminal
 
+- buffer output to cut down on packet-sent count
+
+- allow selection of message channel besides "message"
+	- per-arduino?
+
 - BUG: control-C doesn't work
 	- a packet containing just ^C should stop all macros
 	- same as STOP

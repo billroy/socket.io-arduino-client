@@ -4,6 +4,19 @@ Based on Kevin Rohling's arduino websocket client modified to work with socket.i
 
 The bitlashsocketio.ino example provides an integration with Bitlash on the Arduino and a node.js example server that can be used to send Bitlash commands over the Websocket fabric to the Arduino, and see its output in reply.
 
+
+### Example setup
+
+You'll need node.js and npm installed first.
+
+    cd examples/bitlashsocketio
+    npm install             // only need this once, the first time
+    node index.js           // start web server.  optionally add --port=8080 to change port
+
+
+========================================================
+========================================================
+========================================================
 Kevin's documentation is reproduced hereinafter, with changes as needed.
 
 
